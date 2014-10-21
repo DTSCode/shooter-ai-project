@@ -1,0 +1,83 @@
+#!/usr/bin/make -f
+
+#export DH_VERBOSE=1
+
+CFLAGS = -DLINUX -Wall -g
+
+ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
+	CFLAGS += -O0
+else
+	CFLAGS += -O2
+endif
+
+build: build-stamp
+
+build-stamp:
+	dh_testdir
+
+	$(MAKE) -f /usr/share/quilt/quilt.make patch
+
+	#test -e src/bulletml && $(MAKE) -C src/bulletml MORE_CFLAGS="$(CFLAGS)"
+	$(MAKE) -C src -f makefile.lin MORE_CFLAGS="$(CFLAGS)"
+
+	touch build-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f *-stamp
+
+	#test -e src/bulletml && $(MAKE) -C src/bulletml clean
+	#test -e src/bulletml/tinyxml && $(MAKE) -C src/bulletml/tinyxml clean
+	$(MAKE) -C src -f makefile.lin clean
+
+	$(MAKE) -f /usr/share/quilt/quilt.make unpatch
+
+	dh_clean
+
+install-indep:
+	dh_installdirs -i usr/share/games/rrootage
+	cp -r rr_share/* debian/rrootage-data/usr/share/games/rrootage
+
+install-arch: build
+	dh_testdir
+	dh_testroot
+	dh_install -a src/rrootage usr/games
+	dh_install -a debian/rrootage.xpm usr/share/pixmaps
+	dh_install -a debian/rrootage.desktop usr/share/applications
+
+install: install-arch install-indep
+
+binary-indep: install-indep
+	dh_testdir
+	dh_testroot
+	dh_installchangelogs -i
+	dh_installdocs -i
+	dh_compress -i
+	dh_fixperms -i
+	dh_installdeb -i
+	dh_gencontrol -i
+	dh_md5sums -i
+	dh_builddeb -i
+
+binary-arch: install-arch
+	dh_testdir
+	dh_testroot
+	dh_installmenu -a
+	dh_installman -a debian/rrootage.6
+	dh_link -a usr/share/doc/rrootage-data usr/share/doc/rrootage
+	dh_desktop -prrootage 
+	dh_strip -a
+	dh_compress -a
+	dh_fixperms -a
+	dh_installdeb -a
+	dh_shlibdeps -a
+	dh_gencontrol -a
+	dh_md5sums -a
+	dh_builddeb -a
+
+binary: binary-indep binary-arch
+
+.PHONY: build clean install-indep install-arch install binary-indep \
+	binary-arch binary
+
