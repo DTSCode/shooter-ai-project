@@ -1,2 +1,0 @@
-shlibs:Depends=libbulletml0d2, libc6 (>= 2.14), libgcc1 (>= 1:4.1.1), libgl1-mesa-glx | libgl1, libglu1-mesa | libglu1, libsdl-mixer1.2, libsdl1.2debian (>= 1.2.11), libstdc++6 (>= 4.1.1)
-misc:Depends=

@@ -1,3 +1,0 @@
-?package(rrootage):needs="X11" section="Games/Action"\
-  title="rrootage" command="/usr/games/rrootage" \
-  icon="/usr/share/pixmaps/rrootage.xpm"

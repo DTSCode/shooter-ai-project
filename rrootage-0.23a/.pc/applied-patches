@@ -1,9 +1,0 @@
-01_makefile.patch
-02_data_dir.patch
-03_texture_filename.patch
-04_home.patch
-05_gcc.patch
-06_rrootage_highres.patch
-07_use_system_bulletml.patch
-08_windowed_mode.patch
-10_deg_out_of_range.patch
