@@ -19,14 +19,14 @@ Press the laser key to start the game.
 
 You can also select one of four game modes.
 
-. Normal mode
+* Normal mode
  This is the standard game mode.
  Your ship becomes slow while holding the laser key.
  - Special -> Bomb
  The bomb wipes out enemies bullets.
  The number of bombs are displayed at the bottom-right corner.
 
-. PSY mode
+* PSY mode
  As your ship grazes a bullet, the graze meter (displayed at the bottom-right corner) increases.
  When the graze meter fills up, the ship becomes invincible for a while.
  - Special -> Rolling
@@ -34,14 +34,14 @@ You can also select one of four game modes.
  While holding this key, the ship becomes slow.
  If you want to move faster, tap this key.
 
-. IKA mode
+* IKA mode
  Your ship has two attributes, white and black.
  All bullets also have these attributes. Your ship can absorb bullets which have the same attribute.
  Absorbed bullets are changed into lasers automatically.
  - Special -> Attribution change
  Change your ships attribute.
 
-. GW mode
+* GW mode
  Your ship can use the reflector.
  The reflector reflects bullets around your ship.
  - Special -> Reflector
