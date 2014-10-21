@@ -1,7 +1,7 @@
 shooter-ai-project
 ==================
 
-Making an AI play rRootage
+Creating an intelligent agent to play rRootage.
 
 ## rRootage
 
