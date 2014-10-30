@@ -62,5 +62,28 @@ These options are available:
  -reverse       Reverse the laser key and the bomb key.
 
 
+### Building
+
+#### Linux
+
+Install dependencies:
+* OpenGL Development Libraries
+* SDL_Mixer
+
+Install rRootage:
+* cd $RR_HOME/src
+* make -f makefile.lin
+* mv $RR_HOME/src/rrootage $RR_HOME/rr
+* sudo ./install.sh
+
+Run:
+* ./rr
+
+### Uninstalling
+
+#### Linux
+
+To uninstall, all you need to do is delete /usr/share/games/rrootage
+
 ## Credits
 The original game was created by Kenta Cho (http://www.asahi-net.or.jp/~cs8k-cyu/windows/rr_e.html). It was ported to Linux by Evil Mr Henry (evilmrhenry@yahoo.com).
