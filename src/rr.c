@@ -256,11 +256,14 @@ int main(int argc, char *argv[]) {
   while ( !done ) {
     SDL_PollEvent(&event);
 
-    if ( event.type == SDL_VIDEORESIZE )
+    if ( event.type == SDL_VIDEORESIZE ) {
       resized(event.resize.w, event.resize.h);
+    }
 
     keys = SDL_GetKeyState(NULL);
+
     if ( keys[SDLK_ESCAPE] == SDL_PRESSED || event.type == SDL_QUIT ) done = 1;
+
     if ( keys[SDLK_p] == SDL_PRESSED ) {
       if ( !pPrsd ) {
         if ( status == IN_GAME ) {
@@ -278,6 +281,7 @@ int main(int argc, char *argv[]) {
 
     nowTick = SDL_GetTicks();
     frame = (int)(nowTick-prvTickCount) / interval;
+
     if ( frame <= 0 ) {
       frame = 1;
       SDL_Delay(prvTickCount+interval-nowTick);

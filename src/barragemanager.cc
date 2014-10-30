@@ -49,7 +49,7 @@ static int readBulletMLFiles(const char *dirPath, Barrage brg[]) {
     strcpy(fileName, fullDirPath);
     strcat(fileName, "/");
     strncat(fileName, dir->d_name, sizeof(fileName)-strlen(fileName)-1);
-    brg[i].bulletml = new BulletMLParserTinyXML(fileName);
+    brg[i].bulletml = new BulletMLParserTinyXML(fileName); //I think this probably leaks memory. Need to look into this
     brg[i].bulletml->build(); i++;
     printf("%s\n", fileName);
   }
