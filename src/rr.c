@@ -263,14 +263,16 @@ int main(int argc, char *argv[]) {
     if ( keys[SDLK_ESCAPE] == SDL_PRESSED || event.type == SDL_QUIT ) done = 1;
     if ( keys[SDLK_p] == SDL_PRESSED ) {
       if ( !pPrsd ) {
-	if ( status == IN_GAME ) {
-	  status = PAUSE;
-	} else if ( status == PAUSE ) {
-	  status = IN_GAME;
-	}
+        if ( status == IN_GAME ) {
+          status = PAUSE;
+	      }
+        else if ( status == PAUSE ) {
+	        status = IN_GAME;
+	      }
       }
       pPrsd = 1;
-    } else {
+    }
+    else {
       pPrsd = 0;
     }
 
@@ -280,14 +282,17 @@ int main(int argc, char *argv[]) {
       frame = 1;
       SDL_Delay(prvTickCount+interval-nowTick);
       if ( accframe ) {
-	prvTickCount = SDL_GetTicks();
-      } else {
-	prvTickCount += interval;
+        prvTickCount = SDL_GetTicks();
       }
-    } else if ( frame > 5 ) {
+      else {
+        prvTickCount += interval;
+      }
+    }
+    else if ( frame > 5 ) {
       frame = 5;
       prvTickCount = nowTick;
-    } else {
+    }
+    else {
       prvTickCount += frame*interval;
     }
     for ( i=0 ; i<frame ; i++ ) {
