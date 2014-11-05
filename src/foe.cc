@@ -261,7 +261,8 @@ void moveFoes() {
       }
     }
 
-    if((fe->spc != BATTERY) && (status == IN_GAME)) {
+    if((fe->spc != BATTERY) && (status == IN_GAME))
+    {
       // Check if the bullet hits the ship
       bmv = fe->pos;
       
