@@ -267,21 +267,25 @@ void moveFoes() {
       
       bmv.x -= fe->ppos.x;
       bmv.y -= fe->ppos.y;
-      bmv.x >>= 2; bmv.y >>= 2; 
+      bmv.x >>= 2;
+      bmv.y >>= 2; 
+    
+      inaa = (bmv.x * bmv.x) + (bmv.y * bmv.y);
       
-      inaa = bmv.x*bmv.x + bmv.y*bmv.y;
-      
-      if ( inaa > 1 ) {
+      if(inaa > 1)
+      {
       	sofs = ship.pos;
       	
-      	sofs.x -= fe->ppos.x; sofs.y -= fe->ppos.y;
-      	sofs.x >>= 2; sofs.y >>= 2;
-      	
-      	inab = bmv.x*sofs.x + bmv.y*sofs.y;
+      	sofs.x -= fe->ppos.x;
+        sofs.y -= fe->ppos.y;
+      	sofs.x >>= 2;
+        sofs.y >>= 2;
+      
+      	inab = (bmv.x * sofs.x) + (bmv.y * sofs.y);
       	
       	if(inab > 0 && inab < inaa)
         {
-      	  hd = sofs.x*sofs.x+sofs.y*sofs.y - inab*inab/inaa/inaa;
+      	  hd = (sofs.x * sofs.x) + (sofs.y * sofs.y) - inab * inab / inaa / inaa;
 
       	  if (hd >= 0 && hd < SHIP_HIT_WIDTH) {
       	    destryShip();
@@ -290,12 +294,15 @@ void moveFoes() {
       	  }
 	      }
       }
-      switch (mode) {
+      switch (mode)
+      {
         case PSY_MODE:
         	if(ship.invCnt <= 0)
           {
-        	  sdx = fe->pos.x - ship.pos.x; sdy =  fe->pos.y - ship.pos.y;
+        	  sdx = fe->pos.x - ship.pos.x;
+            sdy =  fe->pos.y - ship.pos.y;
         	  sd = getDistance(sdx, sdy);
+
         	  if(fe->grzRng > 0)
             {
         	    fe->grzRng--;
@@ -323,8 +330,10 @@ void moveFoes() {
         	  break;
         	}
         case IKA_MODE:
-        	sdx = fe->pos.x - ship.pos.x; sdy =  fe->pos.y - ship.pos.y;
+        	sdx = fe->pos.x - ship.pos.x;
+          sdy =  fe->pos.y - ship.pos.y;
         	sd = getDistance(sdx, sdy);
+
         	if(sd < ship.fldWdt && fe->color == ship.color)
           {
         	  // Ship absorbs a bullet that has same color.
@@ -337,8 +346,10 @@ void moveFoes() {
         case GW_MODE:
         	if(ship.rfCnt > 0)
           {
-        	  sdx = fe->pos.x - ship.pos.x; sdy =  fe->pos.y - ship.pos.y;
+        	  sdx = fe->pos.x - ship.pos.x;
+            sdy =  fe->pos.y - ship.pos.y;
         	  sd = getDistance(sdx, sdy);
+            
         	  if (sd < ship.rfWdt)
             {
         	    // Ship reflects a bullet.
