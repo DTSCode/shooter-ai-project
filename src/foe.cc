@@ -262,87 +262,100 @@ void moveFoes() {
     }
 
     if ( fe->spc != BATTERY && status == IN_GAME ) {
-      // Check if the bullet hits the ship.
+      // Check if the bullet hits the ship
       bmv = fe->pos;
-      //vctSub(&bmv, &(fe->ppos));
+      
       bmv.x -= fe->ppos.x;
       bmv.y -= fe->ppos.y;
       bmv.x >>= 2; bmv.y >>= 2; 
-      //inaa = vctInnerProduct(&bmv, &bmv);
+      
       inaa = bmv.x*bmv.x + bmv.y*bmv.y;
-      //if ( inaa > 1.0f ) {
+      
       if ( inaa > 1 ) {
-	sofs = ship.pos;
-	//vctSub(&sofs, &(fe->ppos));
-	sofs.x -= fe->ppos.x; sofs.y -= fe->ppos.y;
-	sofs.x >>= 2; sofs.y >>= 2;
-	//inab = vctInnerProduct(&bmv, &sofs);
-	inab = bmv.x*sofs.x + bmv.y*sofs.y;
-	//ht =  inab / inaa;
-	//if ( ht > 0.0f && ht < 1.0f ) {
-	if ( inab > 0 && inab < inaa ) {
-	  //hd = vctInnerProduct(&sofs, &sofs) - inab*inab/inaa/inaa;
-	  hd = sofs.x*sofs.x+sofs.y*sofs.y - inab*inab/inaa/inaa;
-	  //if ( hd >= 0 && hd < SHIP_HIT_WIDTH && vctSize(&bmv) < 1280 ) {
-	  if ( hd >= 0 && hd < SHIP_HIT_WIDTH ) {
-	    destroyShip();
-	    removeFoe(fe);
-	    continue;
-	  }
-	}
+      	sofs = ship.pos;
+      	
+      	sofs.x -= fe->ppos.x; sofs.y -= fe->ppos.y;
+      	sofs.x >>= 2; sofs.y >>= 2;
+      	
+      	inab = bmv.x*sofs.x + bmv.y*sofs.y;
+      	
+      	if(inab > 0 && inab < inaa)
+        {
+      	  hd = sofs.x*sofs.x+sofs.y*sofs.y - inab*inab/inaa/inaa;
+
+      	  if (hd >= 0 && hd < SHIP_HIT_WIDTH) {
+      	    destryShip();
+      	    removeFoe(fe);
+      	    continue;
+      	  }
+	      }
       }
-      switch ( mode ) {
-      case PSY_MODE:
-	if ( ship.invCnt <= 0 ) {
-	  sdx = fe->pos.x - ship.pos.x; sdy =  fe->pos.y - ship.pos.y;
-	  sd = getDistance(sdx, sdy);
-	  if ( fe->grzRng > 0 ) {
-	    fe->grzRng--;
-	  } else if ( sd < ship.grzWdt ) {
-	    fe->grzRng = -1;
-	  } else if ( fe->grzRng == -1 ) {
-	    // Ship grazes a bullet.
-	    addGrazeFrag(ship.pos.x, ship.pos.y, sdx, sdy);
-	    if ( ship.rollingCnt > 0 ) {
-	      ship.grzCnt += GRZ_METER_UP_ROLLING;
-	    } else {
-	      ship.grzCnt += GRZ_METER_UP;
-	    }
-	    ship.grzf = 1;
-	    fe->grzRng = 24;
-	    addScore(50);
-	  }
-	  break;
-	}
-      case IKA_MODE:
-	sdx = fe->pos.x - ship.pos.x; sdy =  fe->pos.y - ship.pos.y;
-	sd = getDistance(sdx, sdy);
-	if ( sd < ship.fldWdt && fe->color == ship.color ) {
-	  // Ship absorbs a bullet that has same color.
-	  addScore(100);
-	  ship.absEng++;
-	  removeFoe(fe);
-	  continue;
-	}
-	break;
-      case GW_MODE:
-	if ( ship.rfCnt > 0 ) {
-	  sdx = fe->pos.x - ship.pos.x; sdy =  fe->pos.y - ship.pos.y;
-	  sd = getDistance(sdx, sdy);
-	  if ( sd < ship.rfWdt ) {
-	    // Ship reflects a bullet.
-	    addScore(100);
-	    ship.reflects = 1;
-	    addShot(fe->pos.x, fe->pos.y, bossPos->x-fe->pos.x, bossPos->y-fe->pos.y, 2);
-	    removeFoe(fe);
-	    continue;
-	  }
-	}
-	break;
+      switch (mode) {
+        case PSY_MODE:
+        	if(ship.invCnt <= 0)
+          {
+        	  sdx = fe->pos.x - ship.pos.x; sdy =  fe->pos.y - ship.pos.y;
+        	  sd = getDistance(sdx, sdy);
+        	  if(fe->grzRng > 0)
+            {
+        	    fe->grzRng--;
+        	  }
+            else if(sd < ship.grzWdt)
+            {
+        	    fe->grzRng = -1;
+        	  }
+            else if(fe->grzRng == -1)
+            {
+        	    // Ship grazes a bullet.
+        	    addGrazeFrag(ship.pos.x, ship.pos.y, sdx, sdy);
+        	    if(ship.rollingCnt > 0)
+              {
+        	      ship.grzCnt += GRZ_METER_UP_ROLLING;
+        	    }
+              else
+              {
+        	      ship.grzCnt += GRZ_METER_UP;
+        	    }
+        	    ship.grzf = 1;
+        	    fe->grzRng = 24;
+        	    addScore(50);
+        	  }
+        	  break;
+        	}
+        case IKA_MODE:
+        	sdx = fe->pos.x - ship.pos.x; sdy =  fe->pos.y - ship.pos.y;
+        	sd = getDistance(sdx, sdy);
+        	if(sd < ship.fldWdt && fe->color == ship.color)
+          {
+        	  // Ship absorbs a bullet that has same color.
+        	  addScore(100);
+        	  ship.absEng++;
+        	  removeFoe(fe);
+        	  continue;
+        	}
+	        break;
+        case GW_MODE:
+        	if(ship.rfCnt > 0)
+          {
+        	  sdx = fe->pos.x - ship.pos.x; sdy =  fe->pos.y - ship.pos.y;
+        	  sd = getDistance(sdx, sdy);
+        	  if (sd < ship.rfWdt)
+            {
+        	    // Ship reflects a bullet.
+        	    addScore(100);
+        	    ship.reflects = 1;
+        	    addShot(fe->pos.x, fe->pos.y, bossPos->x-fe->pos.x, bossPos->y-fe->pos.y, 2);
+        	    removeFoe(fe);
+        	    continue;
+        	  }
+        	}
+        	break;
       }
     }
-    if ( fe->ppos.x < -FIELD_WIDTH_8/2  || fe->ppos.x >= FIELD_WIDTH_8/2 ||
-	 fe->ppos.y < -FIELD_HEIGHT_8/2 || fe->ppos.y >= FIELD_HEIGHT_8/2 ) {
+
+    if(fe->ppos.x < -FIELD_WIDTH_8/2 || fe->ppos.x >= FIELD_WIDTH_8/2 ||
+        fe->ppos.y < -FIELD_HEIGHT_8/2 || fe->ppos.y >= FIELD_HEIGHT_8/2 )
+    {
       removeFoe(fe);
       continue;
     }
