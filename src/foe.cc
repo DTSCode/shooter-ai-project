@@ -283,11 +283,11 @@ void moveFoes() {
       
       	inab = (bmv.x * sofs.x) + (bmv.y * sofs.y);
       	
-      	if(inab > 0 && inab < inaa)
+      	if((inab > 0) && (inab < inaa))
         {
       	  hd = (sofs.x * sofs.x) + (sofs.y * sofs.y) - inab * inab / inaa / inaa;
 
-      	  if (hd >= 0 && hd < SHIP_HIT_WIDTH) {
+      	  if ((hd >= 0) && (hd < SHIP_HIT_WIDTH)) {
       	    destryShip();
       	    removeFoe(fe);
       	    continue;
@@ -327,14 +327,15 @@ void moveFoes() {
         	    fe->grzRng = 24;
         	    addScore(50);
         	  }
-        	  break;
         	}
+          break;
+
         case IKA_MODE:
         	sdx = fe->pos.x - ship.pos.x;
           sdy =  fe->pos.y - ship.pos.y;
         	sd = getDistance(sdx, sdy);
 
-        	if(sd < ship.fldWdt && fe->color == ship.color)
+        	if((sd < ship.fldWdt) && (fe->color == ship.color))
           {
         	  // Ship absorbs a bullet that has same color.
         	  addScore(100);
@@ -343,14 +344,15 @@ void moveFoes() {
         	  continue;
         	}
 	        break;
+
         case GW_MODE:
         	if(ship.rfCnt > 0)
           {
         	  sdx = fe->pos.x - ship.pos.x;
             sdy =  fe->pos.y - ship.pos.y;
         	  sd = getDistance(sdx, sdy);
-            
-        	  if (sd < ship.rfWdt)
+
+        	  if(sd < ship.rfWdt)
             {
         	    // Ship reflects a bullet.
         	    addScore(100);
