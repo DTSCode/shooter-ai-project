@@ -261,7 +261,7 @@ void moveFoes() {
       }
     }
 
-    if ( fe->spc != BATTERY && status == IN_GAME ) {
+    if((fe->spc != BATTERY) && (status == IN_GAME)) {
       // Check if the bullet hits the ship
       bmv = fe->pos;
       
@@ -288,7 +288,7 @@ void moveFoes() {
       	  hd = (sofs.x * sofs.x) + (sofs.y * sofs.y) - inab * inab / inaa / inaa;
 
       	  if ((hd >= 0) && (hd < SHIP_HIT_WIDTH)) {
-      	    destryShip();
+      	    destroyShip();
       	    removeFoe(fe);
       	    continue;
       	  }
@@ -357,7 +357,7 @@ void moveFoes() {
         	    // Ship reflects a bullet.
         	    addScore(100);
         	    ship.reflects = 1;
-        	    addShot(fe->pos.x, fe->pos.y, bossPos->x-fe->pos.x, bossPos->y-fe->pos.y, 2);
+        	    addShot(fe->pos.x, fe->pos.y, bossPos->x - fe->pos.x, bossPos->y - fe->pos.y, 2);
         	    removeFoe(fe);
         	    continue;
         	  }
