@@ -203,7 +203,8 @@ static void clearFoeShape(Foe *fe, int shape) {
 int processSpeedDownBulletsNum = DEFAULT_SPEED_DOWN_BULLETS_NUM;
 int nowait = 0;
 
-void moveFoes() {
+void moveFoes()
+{
 	int i;
 	Foe *fe;
 	int foeNum = 0;
@@ -213,51 +214,74 @@ void moveFoes() {
 	int sd, sdx, sdy;
 	Vector* bossPos = getBossPos();
 
-	for ( i=0 ; i<FOE_MAX ; i++ ) {
-		if ( foe[i].spc == NOT_EXIST ) continue;
+	for(i=0; i<FOE_MAX; i++)
+	{
+		if(foe[i].spc == NOT_EXIST)
+		{
+			continue;
+		}
+
 		fe = &(foe[i]);
-		if ( fe->cmd ) {
-			if ( fe->spc == BATTERY ) {
-	if ( fe->cmd->isEnd() ) {
-		delete fe->cmd;
-		fe->cmd = new FoeCommand(fe->parser, fe);
-		if ( mode == IKA_MODE ) {
-			if ( fe->ikaType == IKA_ALTERNATE || fe->ikaType == IKA_ALTERNATE_SHOT ) {
-				fe->color ^= 1;
+
+		if(fe->cmd)
+		{
+			if(fe->spc == BATTERY)
+			{
+				if(fe->cmd->isEnd())
+				{
+					delete fe->cmd;
+					fe->cmd = new FoeCommand(fe->parser, fe);
+					if(mode == IKA_MODE)
+					{
+						if(fe->ikaType == IKA_ALTERNATE || fe->ikaType == IKA_ALTERNATE_SHOT)
+						{
+							fe->color ^= 1;
+						}
+					}
+				}
 			}
-		}
-		//fe->cmd->reset();
-	}
-			}
+
 			fe->cmd->run();
-			if ( fe->spc == NOT_EXIST_TMP ) {
-	removeFoeForced(fe);
-	continue;
+
+			if(fe->spc == NOT_EXIST_TMP)
+			{
+				removeFoeForced(fe);
+				continue;
 			}
-			if ( fe->cntTotal < LIMITER_VANISH_CNT &&
-		 (fe->spc == ACTIVE_BULLET || fe->spc == BULLET ) && fe->limiter->on ) {
-	clearFoeShape(fe, 0);
-	removeFoe(fe);
-	continue;
+
+			if(fe->cntTotal < LIMITER_VANISH_CNT && (fe->spc == ACTIVE_BULLET || fe->spc == BULLET ) && fe->limiter->on)
+			{
+				clearFoeShape(fe, 0);
+				removeFoe(fe);
+				continue;
 			}
 		}
-		fe->cnt++; fe->cntTotal++;
+
+		fe->cnt++;
+		fe->cntTotal++;
 		fe->ppos = fe->pos;
-		mx = (int)(( ((sctbl[fe->d]    *fe->spd)>>8) + fe->vel.x) * fe->speedRank);
-		my = (int)((-((sctbl[fe->d+256]*fe->spd)>>8) + fe->vel.y) * fe->speedRank);
-		fe->mv.x = (mx*fe->xReverse);
+
+		mx = (int)((((sctbl[fe->d] * fe->spd) >> 8) + fe->vel.x) * fe->speedRank);
+		my = (int)((-((sctbl[fe->d+256] * fe->spd) >> 8) + fe->vel.y) * fe->speedRank);
+		fe->mv.x = (mx * fe->xReverse);
 		fe->mv.y = my;
 		fe->pos.x += fe->mv.x;
 		fe->pos.y += my;
-		if ( fe->spc != BATTERY ) {
-			if ( absN(mx) + absN(my) < SLOW_MOVE ) {
-	fe->slowMvCnt++;
-	if ( fe->slowMvCnt > SLOW_MOVE_VANISH_CNT ) {
-		removeFoe(fe);
-		continue;
-	}
-			} else {
-	fe->slowMvCnt = 0;
+
+		if(fe->spc != BATTERY)
+		{
+			if(absN(mx) + absN(my) < SLOW_MOVE)
+			{
+				fe->slowMvCnt++;
+				if(fe->slowMvCnt > SLOW_MOVE_VANISH_CNT)
+				{
+					removeFoe(fe);
+					continue;
+				}
+			}
+			else
+			{
+				fe->slowMvCnt = 0;
 			}
 		}
 
@@ -265,28 +289,24 @@ void moveFoes() {
 		if((fe->spc != BATTERY) && (status == IN_GAME))
 		{
 			bmv = fe->pos;
-			
-			bmv.x -= fe->ppos.x;
-			bmv.y -= fe->ppos.y;
-			bmv.x >>= 2;
-			bmv.y >>= 2; 
+
+			bmv.x = (bmv.x - fe->ppos.x) >> 2;
+			bmv.y = (bmv.y - fe->ppos.y) >> 2;
 		
 			inaa = (bmv.x * bmv.x) + (bmv.y * bmv.y);
 			
 			if(inaa > 1)
 			{
 				sofs = ship.pos;
-				
-				sofs.x -= fe->ppos.x;
-				sofs.y -= fe->ppos.y;
-				sofs.x >>= 2;
-				sofs.y >>= 2;
+
+				sofs.x = (sofs.x - fe->ppos.x) >> 2;
+				sofs.y = (sofs.y - fe->ppos.y) >> 2;
 			
 				inab = (bmv.x * sofs.x) + (bmv.y * sofs.y);
 				
 				if((inab > 0) && (inab < inaa))
 				{
-					hd = (sofs.x * sofs.x) + (sofs.y * sofs.y) - inab * inab / inaa / inaa;
+					hd = (sofs.x * sofs.x) + (sofs.y * sofs.y) - ((inab * inab) / (inaa * inaa));
 
 					if ((hd >= 0) && (hd < SHIP_HIT_WIDTH)) {
 						destroyShip();
@@ -368,7 +388,7 @@ void moveFoes() {
 		}
 
 		if(fe->ppos.x < -FIELD_WIDTH_8/2 || fe->ppos.x >= FIELD_WIDTH_8/2 ||
-				fe->ppos.y < -FIELD_HEIGHT_8/2 || fe->ppos.y >= FIELD_HEIGHT_8/2 )
+				fe->ppos.y < -FIELD_HEIGHT_8/2 || fe->ppos.y >= FIELD_HEIGHT_8/2)
 		{
 			removeFoe(fe);
 			continue;
@@ -376,12 +396,15 @@ void moveFoes() {
 		foeNum++;
 	}
 
-	// A game speed becomes slow as many bullets appears.
+	//A game speed becomes slow as many bullets appears.
 	interval = INTERVAL_BASE;
-	if ( !nowait && foeNum > processSpeedDownBulletsNum ) {
-		interval += (foeNum-processSpeedDownBulletsNum) * INTERVAL_BASE / 
-			processSpeedDownBulletsNum;
-		if ( interval > INTERVAL_BASE*2 ) interval = INTERVAL_BASE*2;
+	if(!nowait && foeNum > processSpeedDownBulletsNum)
+	{
+		interval += (foeNum-processSpeedDownBulletsNum) * INTERVAL_BASE / processSpeedDownBulletsNum;
+		if(interval > INTERVAL_BASE*2)
+		{
+			interval = INTERVAL_BASE*2;
+		}
 	}
 }
 
