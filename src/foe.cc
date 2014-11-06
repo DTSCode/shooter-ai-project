@@ -214,7 +214,7 @@ void moveFoes()
 	int sd, sdx, sdy;
 	Vector* bossPos = getBossPos();
 
-	for(i=0; i<FOE_MAX; i++)
+	for(i = 0; i < FOE_MAX; i++)
 	{
 		if(foe[i].spc == NOT_EXIST)
 		{
